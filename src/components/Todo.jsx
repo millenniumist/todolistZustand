@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTodoStore } from "../store/useTodoStore";
+import { toast } from "react-toastify";
 
 
 const Todo = () => {
@@ -8,6 +9,9 @@ const Todo = () => {
   const hdlSubmit = (e) => {
     e.preventDefault();
     addTodo(task);
+    setTask("")
+    toast.success(`Added ${task}`)
+
   };
 
 
@@ -17,29 +21,29 @@ const Todo = () => {
   return (
     <>
       <form onSubmit={hdlSubmit}>
-        <input value={task} onChange={(e) => setTask(e.target.value)} />
-        <button>Add</button>
+        <input className="input input-bordered w-full max-w-xs" value={task} onChange={(e) => setTask(e.target.value)} />
+        <button className="btn">Add</button>
       </form>
       {todo.map((el) =>
         !el.done && !el.editMode? (
-          <div key={el.id}>
-            <span  id={el.id} onClick={() => setDone(el.id)}>{el.task}</span>
-            <button onClick={() => delTodo(el.id)}>Del</button>
-            <button  onClick={(e) => hdlEdit(el.id)}>Edit</button>
+          <div key={el.id} className="flex items-baseline">
+            <p className="min-w-32" id={el.id} onClick={() => setDone(el.id)}>{el.task}</p>
+            <button className="btn" onClick={() => delTodo(el.id)}>Del</button>
+            <button className="btn" onClick={(e) => hdlEdit(el.id)}>Edit</button>
           </div>
         ):   !el.done && el.editMode? (
           <div key={el.id}>
-            <input  id={el.id} value={el.task} onChange={(e)=>setInputToEdit(el.id,e.target.value)}/>
-            <button onClick={() => delTodo(el.id)}>Del</button>
-            <button  onClick={() => setEdit(el.id)}>Edit</button>
+            <input className="input input-bordered w-full max-w-xs" id={el.id} value={el.task} onChange={(e)=>setInputToEdit(el.id,e.target.value)}/>
+            <button className="btn" onClick={() => delTodo(el.id)}>Del</button>
+            <button className="btn" onClick={() => setEdit(el.id)}>Edit</button>
           </div>
         )
          : (
           <div key={el.id}>
-            <span onClick={() => setDone(el.id)}>
-              <del>{el.task}</del>
-            </span>
-            <button onClick={() => delTodo(el.id)}>Del</button>
+          <div key={el.id}>
+            <span className="w-full max-w-xs" id={el.id} onClick={() => setDone(el.id)}><del>{el.task}</del></span>
+            <button className="btn" onClick={() => delTodo(el.id)}>Del</button>
+          </div>
           </div>
         )
       )}
