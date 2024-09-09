@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 
 const Todo = () => {
-  const { addTodo, delTodo, todo, setDone ,setEdit, setInputToEdit} = useTodoStore();
+  const { addTodo, delTodo, todo, setDone ,setEdit, setInputToEdit,userLogin,setLogin} = useTodoStore();
   const [task, setTask] = useState("");
   const hdlSubmit = (e) => {
     e.preventDefault();
@@ -13,8 +13,8 @@ const Todo = () => {
     toast.success(`Added ${task}`)
 
   };
-
-
+  
+  
   const hdlEdit = (index) => {
     setEdit(index)
   }
@@ -24,7 +24,8 @@ const Todo = () => {
         <input className="input input-bordered w-full max-w-xs" value={task} onChange={(e) => setTask(e.target.value)} />
         <button className="btn">Add</button>
       </form>
-      {todo.map((el) =>
+      <button className="btn" onClick={()=>setLogin("Billy")}>Login</button>
+      {todo.filter((el)=> el.user === userLogin).map((el) =>
         !el.done && !el.editMode? (
           <div key={el.id} className="flex items-baseline">
             <p className="min-w-32" id={el.id} onClick={() => setDone(el.id)}>{el.task}</p>
